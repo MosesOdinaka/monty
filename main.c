@@ -1,4 +1,5 @@
 #include "monty.h"
+#include <stdio.h>
 
 /**
  * main - entry point for monty interpreter
@@ -16,7 +17,6 @@ int main(int argc, char **argv)
 	instruction_t instructions[] = {
 		{"push", push},
 		{"pall", pall},
-
 		{NULL, NULL}
 	};
 	char *opcode;
@@ -25,7 +25,13 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		fprintf(stderr, "Error: Can't open file %s\n" argv[1]);
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	script_file = fopen(argv[1], "r");
+	if (script_file == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 	while (getline(&line, &len, script_file) != -1)
@@ -39,7 +45,10 @@ int main(int argc, char **argv)
 		{
 			if (strcmp(opcode, instructions[i].opcode) == 0)
 			{
-				instructions[i].f(&stack, line_number);
+				char *n = strtok(NULL, "\t\n");
+				global_n = n;
+
+				instructions[i].f(&stack, line_number, n);
 				break;
 			}
 		}

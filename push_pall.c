@@ -3,14 +3,16 @@
  * push - pushes an element to the top of a stack
  * @stack: double pointer to the top of the stack
  * @line_number: line number of the opcode in the script file
- * @n: value to push onto the stack
  *
  * Description: pushes an element to the top of a stack_t stack
  */
-void push(stack_t **stack, unsigned int line_number, char *n)
+void push(stack_t **stack, unsigned int line_number)
 {
 	int value;
 	stack_t *new_node;
+	char *n;
+
+	n = global_n;
 
 	if (n == NULL || is_number(n) == 0)
 	{
