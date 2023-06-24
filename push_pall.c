@@ -3,20 +3,14 @@
 /**
  * push - pushes an element to the stack
  * @stack: double pointer to the top of the stack
-<<<<<<< HEAD
  * @line_number: line number of the opcode in the file
-=======
- * @line_number: line number of the opcode in the script file
- *
- * Description: pushes an element to the top of a stack_t stack
->>>>>>> a6ef00a2aa3dfcaf8d36d0fc3e9f748b23ec6a1d
+ * @n: value to push onto the stack
  */
-void push(stack_t **stack, unsigned int line_number)
+void push(stack_t **stack, unsigned int line_number, int n)
 {
 	stack_t *new_node;
-	char *n;
 
-	n = global_n;
+	(void)line_number; /* Prevent unused parameter warning */
 
 	if (stack == NULL)
 		exit(EXIT_FAILURE);
@@ -28,7 +22,7 @@ void push(stack_t **stack, unsigned int line_number)
 		exit(EXIT_FAILURE);
 	}
 
-	new_node->n = argument;
+	new_node->n = n;
 	new_node->prev = NULL;
 	new_node->next = *stack;
 	if (*stack != NULL)

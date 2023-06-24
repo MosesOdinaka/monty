@@ -6,8 +6,6 @@
 #include <ctype.h>
 #include <string.h>
 
-extern char *global_n;
-
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -15,13 +13,13 @@ extern char *global_n;
  * @next: points to the next element of the stack (or queue)
  *
  * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO Holberton project
+ * for stack, queues, LIFO, FIFO
  */
 typedef struct stack_s
 {
-	int n;
-	struct stack_s *prev;
-	struct stack_s *next;
+		int n;
+		struct stack_s *prev;
+		struct stack_s *next;
 } stack_t;
 
 /**
@@ -38,10 +36,7 @@ typedef struct instruction_s
 		void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-int is_number(char *str);
-void stack_push(stack_t **stack, int value);
-int stack_pop(stack_t **stack);
-void push(stack_t **stack, unsigned int line_number);
+void push(stack_t **stack, unsigned int line_number, int n);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
