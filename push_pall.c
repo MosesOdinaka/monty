@@ -3,11 +3,20 @@
 /**
  * push - pushes an element to the stack
  * @stack: double pointer to the top of the stack
+<<<<<<< HEAD
  * @line_number: line number of the opcode in the file
+=======
+ * @line_number: line number of the opcode in the script file
+ *
+ * Description: pushes an element to the top of a stack_t stack
+>>>>>>> a6ef00a2aa3dfcaf8d36d0fc3e9f748b23ec6a1d
  */
 void push(stack_t **stack, unsigned int line_number)
 {
 	stack_t *new_node;
+	char *n;
+
+	n = global_n;
 
 	if (stack == NULL)
 		exit(EXIT_FAILURE);
