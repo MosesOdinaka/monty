@@ -1,5 +1,4 @@
 #include "monty.h"
-#define BUFFER_SIZE 1024
 /**
  * main - entry point for monty interpreter
  * @argc: argument count
@@ -9,9 +8,11 @@
 int main(int argc, char **argv)
 {
 	FILE *fp;
-	char line[BUFFER_SIZE];
+	char *line = NULL;
+	size_t n = 0;
+	ssize_t len;
 	char *opcode;
-	int n;
+	int num;
 	unsigned int line_number = 0;
 	stack_t *stack = NULL;
 
@@ -26,7 +27,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	while (fgets(line, BUFFER_SIZE, fp) != NULL)
+	while ((len = my_getline(&line, &n, fp, 1024)) != -1)
 	{
 		line_number++;
 		opcode = strtok(line, " \t\n");
@@ -34,8 +35,8 @@ int main(int argc, char **argv)
 			continue;
 		if (strcmp(opcode, "push") == 0)
 		{
-			n = atoi(strtok(NULL, " \t\n"));
-			push(&stack, line_number, n);
+			num = atoi(strtok(NULL, " \t\n"));
+			push(&stack, line_number, num);
 		}
 		else if (strcmp(opcode, "pall") == 0)
 			pall(&stack, line_number);
@@ -44,10 +45,12 @@ int main(int argc, char **argv)
 		else
 		{
 			fprintf(stderr, "L%u: unknown instruction %s\n", line_number,
-				opcode);
+					opcode);
 			exit(EXIT_FAILURE);
 		}
 	}
+
+	free(line);
 	fclose(fp);
 	return (0);
 }
