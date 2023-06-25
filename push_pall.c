@@ -4,16 +4,20 @@
  * push - pushes an element to the stack
  * @stack: double pointer to the top of the stack
  * @line_number: line number of the opcode in the file
- * @n: value to push onto the stack
  */
-void push(stack_t **stack, unsigned int line_number, int n)
+void push(stack_t **stack, unsigned int line_number)
 {
 	stack_t *new_node;
+	char *arg;
+	int n;
 
-	(void)line_number; /* Prevent unused parameter warning */
-
-	if (stack == NULL)
+	arg = strtok(NULL, " \t\n");
+	if (arg == NULL || !is_number(arg))
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
+	}
+	n = atoi(arg);
 
 	new_node = malloc(sizeof(stack_t));
 	if (new_node == NULL)

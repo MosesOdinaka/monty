@@ -5,6 +5,7 @@
  * @argv: argument variable
  * Return: 0 on success, non zero on failure.
  */
+
 int main(int argc, char **argv)
 {
 	FILE *fp;
@@ -12,9 +13,16 @@ int main(int argc, char **argv)
 	size_t n = 0;
 	ssize_t len;
 	char *opcode;
-	int num;
 	unsigned int line_number = 0;
 	stack_t *stack = NULL;
+	instruction_t opcodes[] = {
+		{"push", push},
+		{"pall", pall},
+		{"pint", pint},
+		{"pop", pop},
+		{NULL, NULL}
+	};
+	int i;
 
 	if (argc != 2)
 	{
@@ -33,24 +41,15 @@ int main(int argc, char **argv)
 		opcode = strtok(line, " \t\n");
 		if (opcode == NULL || strncmp(opcode, "#", 1) == 0)
 			continue;
-		if (strcmp(opcode, "push") == 0)
+		for (i = 0; opcodes[i].opcode != NULL; i++)
 		{
-			num = atoi(strtok(NULL, " \t\n"));
-			push(&stack, line_number, num);
+			if (strcmp(opcode, opcodes[i].opcode) == 0)
+			{
+				opcodes[i].f(&stack, line_number);
+				break;
+			}
 		}
-		else if (strcmp(opcode, "pall") == 0)
-			pall(&stack, line_number);
-		else if (strcmp(opcode, "pint") == 0)
-			pint(&stack, line_number);
-		else if (strcmp(opcode, "pop") == 0)
-			pop(&stack, line_number);
-		else if (strcmp(opcode, "swap") == 0)
-			swap(&stack, line_number);
-		else if (strcmp(opcode, "add") == 0)
-			add(&stack, line_number);
-		else if (strcmp(opcode, "nop") == 0)
-			nop(&stack, line_number);
-		else
+		if (opcodes[i].opcode == NULL)
 		{
 			fprintf(stderr, "L%u: unknown instruction %s\n", line_number,
 					opcode);
